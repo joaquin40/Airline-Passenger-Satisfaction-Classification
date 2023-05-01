@@ -44,11 +44,11 @@ The no information rate for the testing dataset is about 0.57 and prevalence is 
 The figure below shows each of the model performance metrics. All 7 models performed well in predicting passenger satisfaction since the accuracy for all models is greater than the no information rate of 0.57. The Logistic lasso regression has the lowest metrics with an F1 score of 0.86. The top three models are Boosting, Bagging, and Random Forest have really close performances metrics. The Boosting model has the greatest precision of 0.97 and balanced accuracy of 0.96.
 
 
-![](.\images\prediction_res.png)
+![](./images/prediction_res.png)
 
 The plot below show receiver operating characteristic curve (ROC) for each model. All model area under curve (AUC) is grater than 0.9 meaning the all models performed well in classifying satisfaction.  Again the Boosting Decision Tree model has the highest AUC of 0.993.
 
-![](.\images\roc.png)
+![](./images/roc.png)
 
 Conclusion: After training the models using 10-fold cross validation, all models performed well in predicting passenger with model. Overall the Boosting Decision tree model is the best classifier cwith the highest perforemance metrics. 
 

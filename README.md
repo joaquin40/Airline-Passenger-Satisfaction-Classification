@@ -1,5 +1,7 @@
 # Airline Passenger Satisfaction Classification  
 
+The airline passenger satisfaction survey dataset can be found [here](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction).
+
 This dataset contains an airline passenger satisfaction survey. In this project, we explored what are the important predictors related to passenger satisfaction using different types of Decision Tree models (Bagging, Random Forest, Boosting) and Logistic Lasso regression. Secondly, we predicted passenger satisfaction by comparing the the accuracy, precision, recall, F1 score of the following models KNN, Decision Tree, Bagging Decision tree, Boosting Decision tree, Random Forest, Support Machine Vector (SVM), and Logistic Lasso regression.
 
 

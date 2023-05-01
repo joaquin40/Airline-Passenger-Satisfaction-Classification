@@ -657,7 +657,7 @@ plt.title('Receiver operating characteristic')
 plt.legend(loc="lower right")
 plt.show()
 
-
+# performance metrics table
 tb = {
     'Models'   : ['Boosting Decision tree', 'Random Forest', 'Bagging Decision tree', 'SVM', 'Decision tree', 'KNN', 'Logistic Lasso Regression'],
     "Accuracy" : [boost_accuracy, rf_accuracy, bag_accuracy, svm_accuracy, t_accuracy, knn_accuracy ,log_accuracy],

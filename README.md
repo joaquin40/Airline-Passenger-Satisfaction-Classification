@@ -27,7 +27,7 @@ Meaning, as `Online boarding` service satisfaction increase by one, the odds of 
 
 Also, as `Inflight wifi service`  satisfaction increase by one, the odds of passenger satisfaction increase by a factor of 1.7 when all other variables are held fixed.
 
-![](.\images\logistic_param.png)
+![](./images/logistic_param.png)
 
 
 Conclusion: In all four Decision tree models and the Logistic Lasso regression model the top variables that are associated with passenger satisfaction are `Online boarding` and `Inflight wifi service`. 

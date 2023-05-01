@@ -19,6 +19,8 @@ The plots below show the top 10 important features for each of the decision tree
 
 A Logistic Lasso regression was also performed. The table below is the estimated coefficient for the parameters of the model. The table contains the estimated Log-Odds and Odds Ratio for each variable and order by Odds Ratio coefficient.
 
+![](./images/logistic_param.png)
+
 There is 1 variable `Class Eco` with estimated parameter of zero. This is because Lasso regression was performed. 
 
 Similarly with the Decision tree models, the Logistic Lasso regression shows that `Online Boarding` and `Inflight wifi service` has association with passenger satisfaction with an Odds Ratio 2.3 and 1.7 respectively.
@@ -27,7 +29,6 @@ Meaning, as `Online boarding` service satisfaction increase by one, the odds of 
 
 Also, as `Inflight wifi service`  satisfaction increase by one, the odds of passenger satisfaction increase by a factor of 1.7 when all other variables are held fixed.
 
-![](./images/logistic_param.png)
 
 
 Conclusion: In all four Decision tree models and the Logistic Lasso regression model the top variables that are associated with passenger satisfaction are `Online boarding` and `Inflight wifi service`. 

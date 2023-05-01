@@ -1,41 +1,23 @@
----
-title: "Airline Passenger Satisfaction Classification"
-author: "Joaquin Sanchez Ibarra"
-format: html
-editor: visual
----
 
-```{r}
-knitr::purl("Airline-Passenger-Satisfaction-Classification.qmd")
-```
-
-
-Load packages.
-
-```{r}
 pacman::p_load(tidyverse, data.table, DataExplorer, missForest, caret, doParallel, foreach, e1071, car, randomForest, gbm, gt, bartMachine,skimr)
-```
 
 
-```{r}
+
 df <- fread("./data/train.csv")
-```
 
-```{r}
+
+
 #glimpse(df)
 df %>% skim()
-```
-Clean data
 
-Replace white space with underscore
-```{r}
+
+
 colnames(df) <- gsub(c("\\s+"), "_", colnames(df)) 
 colnames(df) <-   gsub("/", "_", colnames(df))
   
-```
 
 
-```{r}
+
 df1 <- df %>% 
   select(-V1, -id) %>% 
   slice_sample(prop = .1,replace = F) %>% 
@@ -45,54 +27,47 @@ df1 <- df %>%
          Class = factor(Class),
          satisfaction = factor(satisfaction))
 summary(df1)
-```
 
 
-Missing NA plot
-```{r}
+
 DataExplorer::plot_missing(df1)
-```
-
-Imputation of NA values using `missForest` package
-
-```{r, eval=F}
-rf_na <- missForest(df1,
-                    ntree = 100,
-                    variablewise = F,
-                    verbose= T,
-                    mtry = round(sqrt(ncol(df1)-1)))
 
 
 
-```
+## rf_na <- missForest(df1,
+##                     ntree = 100,
+##                     variablewise = F,
+##                     verbose= T,
+##                     mtry = round(sqrt(ncol(df1)-1)))
+## 
+## 
+## 
 
-```{r}
+
+
 df2 <- rf_na$ximp
-```
 
-```{r}
+
+
 df2 <- slice_sample(df2,n = 1000)
 x <- model.matrix(satisfaction ~ ., data = df2)[,-1] 
 y <- df2$satisfaction
-```
 
-```{r}
+
+
 df2 <- data.frame(x,y) 
 colnames(df2) <-  gsub("\\.","", colnames(data.frame(cbind(x,y)) ))
 df2 <- mutate(rename(df2, "satisfaction" = "y"))
 
 plot_missing(df2)
-```
 
 
-```{r}
+
 df2$satisfaction <- factor(df2$satisfaction, levels = c("satisfied", "neutral or dissatisfied"), labels = c("satisfied", "Neutral_or_dissatisfied"))
 levels(df2$satisfaction)
-```
 
 
-KNN model
-```{r}
+
 set.seed(1)
 
 index <- caret::createDataPartition(df2$satisfaction, p = .7,list = FALSE)
@@ -117,11 +92,9 @@ knn_model <- train(satisfaction ~ ., data = train,
       tuneLength = 5)
 
 
-```
 
 
-Results
-```{r}
+
 knn_model
 plot(knn_model)
 
@@ -131,11 +104,9 @@ knn_model$results
 test_pred <- predict(knn_model, newdata = test)
 
 confusionMatrix(test$satisfaction ,test_pred)
-```
 
 
-Bagging and RF models
-```{r}
+
 set.seed(1)
 param_grid <-  expand.grid(mtry = c(2, 3, 4, (ncol(df2)-1) ), ntree = c(100, 200, 300,500))
 ctrl <- trainControl(method = "cv",
@@ -162,10 +133,9 @@ confusionMatrix(test$satisfaction ,rf_test_pred)
 varImp(rf_model)
 varImpPlot(rf_model$finalModel)
 importance(rf_model$finalModel) %>% data.frame() %>% gt() 
-```
 
-Boosting model 
-```{r}
+
+
 set.seed(1)
 # Specify grid of hyperparameters to search over
 grid <- expand.grid(interaction.depth = c(1, 2, 3),
@@ -190,12 +160,9 @@ gbm_fit$finalModel
 # test predictions
 gmb_test_pred <- predict(gbm_fit, newdata = test)
 confusionMatrix(test$satisfaction ,gmb_test_pred)
-```
 
 
-BART Bayesian additive regression tress
 
-```{r}
 set.seed(1)
 
 # Specify grid of hyperparameters to search over
@@ -228,10 +195,9 @@ bartFit <- train(
   burn = 1000,
   iter = 4000
 )
-```
 
 
-```{r}
+
 plot(bartFit)
 
 bartFit$results
@@ -251,12 +217,9 @@ bart_importance_df <- bart_importance$importance %>%
   gt()  
 
 bart_importance_df 
-```
 
 
-Check for multicollinearity
 
-```{r}
 pacman::p_load(corrplot,Hmisc)
 
 col_id <- which(names(df2) == c("satisfaction|GenderMale"))
@@ -273,19 +236,14 @@ corrplot(cor_matrix, type = "upper", order = "hclust", tl.cex = 0.8)
 
 corr_table$r[corr_table$r>.5]
 
-```
 
 
 
-
-Set up to use DoParallel.
-
-```{r}
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
-```
 
-```{r}
+
+
 set.seed(1)
 
 index <- caret::createDataPartition(df2$satisfaction, p = .7,list = FALSE)
@@ -307,29 +265,26 @@ tune.out <- tune(svm, satisfaction ~ ., data = train,
 
 summary(tune.out)
 
-```
 
-```{r}
+
+
 svm_pre <- predict(tune.out$best.model, newdata = test)
 
 attributes(svm_pre)$decision.values
 
 confusionMatrix(reference = test$satisfaction, svm_pre)
 
-```
 
 
-```{r}
+
 # Stop the parallel 
 stopCluster(cl)
-```
 
-Run after using DoParallel
 
-```{r}
+
 unregister_dopar <- function() {
   env <- foreach:::.foreachGlobals
   rm(list=ls(name=env), pos=env)
 }
 unregister_dopar()
-```
+

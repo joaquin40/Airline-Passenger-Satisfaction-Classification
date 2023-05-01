@@ -50,7 +50,7 @@ The plot below show receiver operating characteristic curve (ROC) for each model
 
 ![](./images/roc.png)
 
-Conclusion: After training the models using 10-fold cross validation, all models performed well in predicting passenger with model. Overall the Boosting Decision tree model is the best classifier cwith the highest perforemance metrics. 
+Conclusion: After training the models using 10-fold cross validation, all models performed well in predicting passenger with model. Overall the Boosting Decision tree model is the best classifier with the highest performance metrics. 
 
 
 ## Dataset Airline passanger satisfaction
